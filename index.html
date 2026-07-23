@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyComicReader</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/reader.css">
+  <link rel="stylesheet" href="styles/settings.css">
+</head>
+<body>
+  <div id="app">
+    <div class="app-container">
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h1 class="app-logo">MyComicReader</h1>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item active" data-view="library">
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">Library</span>
+          </li>
+          <li class="nav-item" data-view="local">
+            <span class="nav-icon">📁</span>
+            <span class="nav-text">Local Comics</span>
+          </li>
+          <li class="nav-item" data-view="history">
+            <span class="nav-icon">📜</span>
+            <span class="nav-text">History</span>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <button class="nav-item" id="settings-btn">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-text">Settings</span>
+          </button>
+        </div>
+      </nav>
+
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Search comics...">
+            <span class="search-icon">🔍</span>
+          </div>
+          <div class="top-actions">
+            <select id="sort-select" class="sort-select">
+              <option value="name">Name</option>
+              <option value="dateAdded">Date Added</option>
+              <option value="lastRead">Last Read</option>
+              <option value="unread">Unread</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="content-area">
+          <div id="library-view" class="view active">
+            <div class="library-actions">
+              <button class="btn-action" id="add-folder-btn">📁 Add Folder</button>
+              <button class="btn-action" id="add-files-btn">📄 Add Files</button>
+            </div>
+            <div class="comic-grid" id="comic-grid"></div>
+            <div class="empty-state" id="empty-library">
+              <div class="empty-icon">📚</div>
+              <h2>Your Library is Empty</h2>
+              <p>Add local comic folders or files to get started</p>
+              <div class="empty-actions">
+                <button class="btn-primary" id="add-folder-empty">📁 Add Folder</button>
+                <button class="btn-secondary" id="add-files-empty">📄 Add Files</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="local-view" class="view">
+<div class="local-header">
+            <h2>Local Comics</h2>
+            <div class="local-actions">
+              <button class="btn-primary" id="scan-local-btn">📁 Scan Folder</button>
+              <button class="btn-secondary" id="refresh-local-btn">🔄 Refresh All</button>
+              <button class="btn-secondary" id="add-local-files-btn">📄 Add Files</button>
+            </div>
+          </div>
+            <div class="folder-list" id="folder-list"></div>
+            <div class="comic-grid" id="local-grid"></div>
+            <div class="empty-state" id="empty-local">
+              <div class="empty-icon">📁</div>
+              <h2>No Local Comics</h2>
+              <p>Scan a folder or add comic files (CBZ, CBR, PDF, ZIP, image folders)</p>
+              <button class="btn-primary" id="scan-empty">📁 Scan Folder</button>
+            </div>
+          </div>
+
+          <div id="history-view" class="view">
+            <h2>Reading History</h2>
+            <div class="history-list" id="history-list"></div>
+            <div class="empty-state" id="empty-history">
+              <div class="empty-icon">📜</div>
+              <h2>No Reading History</h2>
+              <p>Comics you've read will appear here</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="comic-detail-modal">
+      <div class="modal comic-detail-modal">
+        <button class="modal-close" id="close-detail">&times;</button>
+        <div class="comic-detail">
+          <div class="comic-cover-large" id="detail-cover"></div>
+          <div class="comic-info">
+            <h2 id="detail-title"></h2>
+            <div class="comic-meta" id="detail-meta"></div>
+            <div class="comic-actions">
+              <button class="btn-primary" id="start-reading-btn">Start Reading</button>
+              <button class="btn-secondary" id="add-library-btn">Add to Library</button>
+            </div>
+          </div>
+        </div>
+        <div class="chapters-section">
+          <h3>Chapters / Files</h3>
+          <div class="chapter-list" id="chapter-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal">
+      <div class="modal settings-modal">
+        <button class="modal-close" id="close-settings">&times;</button>
+        <h2>Settings</h2>
+        <div class="settings-tabs">
+          <button class="tab-btn active" data-tab="reader">Reader</button>
+          <button class="tab-btn" data-tab="appearance">Appearance</button>
+          <button class="tab-btn" data-tab="local">Local Sources</button>
+          <button class="tab-btn" data-tab="about">About</button>
+        </div>
+        <div class="settings-content">
+          <div class="settings-panel active" id="reader-settings">
+            <div class="setting-group">
+              <h3>Reader</h3>
+              <label class="setting-item">
+                <span>Default Reading Mode</span>
+                <select id="reading-mode">
+                  <option value="vertical">Vertical (Webtoon)</option>
+                  <option value="single">Single Page</option>
+                  <option value="double">Double Page</option>
+                  <option value="horizontal">Horizontal</option>
+                </select>
+              </label>
+              <label class="setting-item">
+                <span>Fit Screen</span>
+                <select id="fit-screen">
+                  <option value="height">Fit Height</option>
+                  <option value="width">Fit Width</option>
+                  <option value="screen">Fit Screen</option>
+                  <option value="original">Original</option>
+                </select>
+              </label>
+              <label class="setting-item">
+                <span>Background Color</span>
+                <select id="reader-bg">
+                  <option value="black">Black</option>
+                  <option value="gray">Gray</option>
+                  <option value="white">White</option>
+                </select>
+              </label>
+              <label class="setting-item">
+                <span>Page Preload</span>
+                <input type="range" id="page-preload" min="0" max="5" value="2">
+                <span class="range-value" id="preload-value">2</span>
+              </label>
+              <label class="setting-item">
+                <span>Double Page Gap</span>
+                <input type="range" id="page-gap" min="0" max="20" value="4">
+                <span class="range-value" id="gap-value">4px</span>
+              </label>
+            </div>
+          </div>
+          <div class="settings-panel" id="appearance-settings">
+            <div class="setting-group">
+              <h3>Appearance</h3>
+              <label class="setting-item">
+                <span>Theme</span>
+                <select id="theme-select">
+                  <option value="dark">Dark</option>
+                  <option value="light">Light</option>
+                  <option value="midnight">Midnight Blue</option>
+                  <option value="strawberry">Strawberry</option>
+                </select>
+              </label>
+              <label class="setting-item">
+                <span>Accent Color</span>
+                <input type="color" id="accent-color" value="#4CAF50">
+              </label>
+              <label class="setting-item">
+                <span>Grid Size</span>
+                <input type="range" id="grid-size" min="100" max="250" value="160">
+                <span class="range-value" id="grid-size-value">160px</span>
+              </label>
+              <label class="setting-item">
+                <span>Show Comic Titles</span>
+                <input type="checkbox" id="show-titles" checked>
+              </label>
+              <label class="setting-item">
+                <span>Show Unread Badges</span>
+                <input type="checkbox" id="show-badges" checked>
+              </label>
+            </div>
+          </div>
+          <div class="settings-panel" id="local-settings">
+            <div class="setting-group">
+              <h3>Local Sources</h3>
+              <label class="setting-item">
+                <span>Auto-scan on Startup</span>
+                <input type="checkbox" id="auto-scan">
+              </label>
+              <label class="setting-item">
+                <span>Watch for File Changes</span>
+                <input type="checkbox" id="watch-files">
+              </label>
+              <div class="local-folders" id="local-folders"></div>
+              <button class="btn-primary" id="add-local-folder-btn">+ Add Folder</button>
+            </div>
+          </div>
+          <div class="settings-panel" id="about-settings">
+            <div class="setting-group">
+              <h3>About</h3>
+              <div class="about-info">
+                <h2>MyComicReader</h2>
+                <p class="version">Version 1.0.0</p>
+                <p>A desktop comic reader for local files.</p>
+                <p>Supported formats: CBZ, CBR, ZIP, PDF, image folders</p>
+              <button class="btn-secondary" id="view-log-btn" style="margin-top: 12px;">View Log</button>
+              <pre id="log-viewer" style="display:none;margin-top:8px;padding:8px;background:#111;color:#0f0;font-size:11px;max-height:300px;overflow:auto;border-radius:4px;white-space:pre-wrap;word-break:break-all;"></pre>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 16px 24px; text-align: right;">
+            <button class="btn-primary" id="save-settings-btn">Save Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reader-overlay" id="reader-overlay">
+      <div class="reader-header" id="reader-header">
+        <button class="reader-back-btn" id="reader-close" data-reader-action="close">
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <div class="reader-info">
+          <h3 id="reader-title"></h3>
+          <span id="reader-chapter"></span>
+        </div>
+        <div class="reader-controls">
+          <button class="reader-btn" id="prev-chapter" data-reader-action="prev" title="Previous Page">◀</button>
+          <button class="reader-btn" id="next-chapter" data-reader-action="next" title="Next Page">▶</button>
+          <button class="reader-btn" id="reader-settings-btn" data-reader-action="settings" title="Settings">⚙️</button>
+          <button class="reader-btn" id="open-new-window" data-reader-action="newwindow" title="Open in new window">⛶</button>
+          <select id="chapter-select" class="chapter-select"></select>
+        </div>
+      </div>
+      <div class="reader-container" id="reader-container"></div>
+      <div class="reader-footer" id="reader-footer">
+        <span id="page-indicator">Page 1 / 1</span>
+        <div class="reader-progress">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+  </div>
+
+  <script src="js/logger.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/reader.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

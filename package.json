@@ -1,0 +1,30 @@
+{
+  "name": "mycomicreader",
+  "version": "1.0.0",
+  "description": "Desktop comic reader app - read local comics and web extensions",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "canvas": "^3.2.3",
+    "pdfjs-dist": "^3.11.174",
+    "unrar-js": "^0.2.0"
+  },
+  "build": {
+    "appId": "com.mycomicreader.app",
+    "productName": "MyComicReader",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

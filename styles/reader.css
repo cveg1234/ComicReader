@@ -1,0 +1,351 @@
+.reader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 3000;
+  display: none;
+  flex-direction: column;
+}
+
+.reader-overlay.active {
+  display: flex;
+}
+
+.reader-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 15px;
+  z-index: 10;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.reader-overlay.show-header .reader-header {
+  transform: translateY(0);
+}
+
+.reader-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reader-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.reader-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reader-back-btn:hover {
+  background: var(--accent-hover);
+}
+
+.reader-back-btn span:first-child {
+  font-size: 1.2rem;
+}
+
+.reader-info {
+  flex: 1;
+}
+
+.reader-info h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.reader-info span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.reader-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reader-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reader-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.chapter-select {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  color: white;
+  font-size: 0.85rem;
+  max-width: 200px;
+}
+
+.chapter-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.chapter-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.reader-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.reader-container.mode-horizontal {
+  flex-direction: row;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding: 0;
+}
+
+.reader-container.mode-single {
+  justify-content: center;
+  padding: 0;
+}
+
+.reader-container.mode-double {
+  justify-content: center;
+  padding: 0;
+}
+
+.reader-page {
+  max-width: 100%;
+  max-height: calc(100vh - 120px);
+  display: block;
+  margin: 0 auto;
+  background: #111;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.reader-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.reader-container.mode-horizontal {
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.reader-container.mode-horizontal .reader-page {
+  max-height: 100vh;
+  margin: 0;
+}
+
+.reader-container.mode-single .reader-page,
+.reader-container.mode-double .reader-page {
+  max-height: 100vh;
+}
+
+.double-page-container {
+  display: flex;
+  gap: 4px;
+  height: 100vh;
+}
+
+.double-page-container img {
+  max-height: 100vh;
+  max-width: 50%;
+  object-fit: contain;
+}
+
+.reader-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 15px;
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.reader-overlay.show-header .reader-footer {
+  transform: translateY(0);
+}
+
+#page-indicator {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 100px;
+}
+
+.reader-progress {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.2s ease;
+  width: 0%;
+}
+
+.reader-nav-overlay {
+  position: absolute;
+  top: 60px;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  display: flex;
+  z-index: 5;
+}
+
+.nav-zone {
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.nav-zone:hover {
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 1;
+}
+
+.nav-zone.prev {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-zone.next {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-zone span {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.reader-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reader-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.reader-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.reader-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.reader-settings-popup {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 15px;
+  min-width: 250px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  display: none;
+}
+
+.reader-settings-popup.active {
+  display: block;
+}
+
+.reader-setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.reader-setting-item:last-child {
+  border-bottom: none;
+}
+
+.reader-setting-item label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.reader-setting-item select,
+.reader-setting-item input {
+  padding: 5px 10px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
