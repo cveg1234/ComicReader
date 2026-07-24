@@ -1,4 +1,4 @@
-# MyComicReader
+# ComicReader
 
 A desktop comic reader for Windows supporting CBZ, CBR, PDF, ZIP, and image folder comics.
 
