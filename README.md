@@ -16,7 +16,7 @@ npm install
 npm start
 ```
 
-Or double-click `Start ComicReader.bat` — it will run `npm install` automatically if `node_modules` is missing, then start the app.
+Or double-click `Start ComicReader.bat` — it will run `npm install` automatically if `node_modules` is missing, then start the app. After the npm installation use the .bat file to start the app
 
 ## Usage
 
