@@ -10,6 +10,7 @@ A desktop comic reader for Windows supporting CBZ, CBR, PDF, ZIP, and image fold
 
 ## Quick Start
 
+You must have Node.js installed to use the .bat file
 ```bash
 npm install
 npm start
